@@ -8,8 +8,7 @@ import android.os.Bundle;
 public class SplashActivity extends AppCompatActivity {
     private final int SPLASH_DISP_LEN = 1000;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
         new Handler().postDelayed(new Runnable() {

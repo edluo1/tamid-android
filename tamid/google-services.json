@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "665773696789",
+    "firebase_url": "https://tamid-da82c.firebaseio.com",
+    "project_id": "tamid-da82c",
+    "storage_bucket": "tamid-da82c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665773696789:android:dcad3c99c3cd2fb3",
+        "android_client_info": {
+          "package_name": "org.globalappinitiative.tamid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "665773696789-tkk4a5sccpjl9sjke03q3arqk5019j0f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.globalappinitiative.tamid",
+            "certificate_hash": "42C3406E1DF2C30F6CBCEB8EA89E817F27A810A5"
+          }
+        },
+        {
+          "client_id": "665773696789-031s18nqiv5kbtp92e194f6j4cf1lifm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVb38IETEJK_Cl7IqDwwKTOlt2Qoil-3g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "665773696789-031s18nqiv5kbtp92e194f6j4cf1lifm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "665773696789-9gkc1c87cg0l0defr3v754h8f0eek582.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.test.tamidShowcase"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
