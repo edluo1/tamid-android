@@ -3,6 +3,8 @@ package org.globalappinitiative.tamid;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -19,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,10 +36,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.Manifest.permission.PACKAGE_USAGE_STATS;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
@@ -79,7 +86,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         firebaseAuth = FirebaseAuth.getInstance();
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -204,8 +210,29 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            showProgress(true);
+            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) { // successfully registered
+                        // start MainActivity
+                        //Context c = getApplicationContext();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        // didn't succeed
+                        try {
+                            throw task.getException();
+                        } catch(FirebaseAuthInvalidCredentialsException e) {
+                            mPasswordView.setError(e.getMessage());
+                            mPasswordView.requestFocus();
+                        } catch(Exception e) {
+                            Log.e("ERROR: ", e.getMessage());
+                        }
+                        showProgress(false);
+                    }
+                }
+            });
         }
     }
 
@@ -256,8 +283,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) { // successfully registered
                       // start MainActivity
+                        //Context c = getApplicationContext();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
                     } else {
                         // didn't succeed
+                        try {
+                            throw task.getException();
+                        } catch(FirebaseAuthInvalidCredentialsException e) {
+                            mEmailView.setError(getString(R.string.error_invalid_email));
+                            mEmailView.requestFocus();
+                        } catch(FirebaseAuthUserCollisionException e) {
+                            mEmailView.setError(getString(R.string.error_user_exists));
+                            mEmailView.requestFocus();
+                        } catch(Exception e) {
+                            Log.e("ERROR: ", e.getMessage());
+                        }
+                        showProgress(false);
                     }
                 }
             });
