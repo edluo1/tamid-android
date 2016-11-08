@@ -24,10 +24,10 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
-            android:noHistory="true"></activity>
+            android:noHistory="true" />
         <activity
             android:name=".MainActivity"
-            android:label="TAMID"></activity>
+            android:label="TAMID" />
     </application>
 
 </manifest>
