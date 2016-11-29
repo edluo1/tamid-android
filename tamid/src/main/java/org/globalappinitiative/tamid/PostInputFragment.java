@@ -7,7 +7,15 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,16 +26,11 @@ import android.widget.TextView;
  * create an instance of this fragment.
  */
 public class PostInputFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private TextView tvPostContent;
 
     private OnFragmentInteractionListener mListener;
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
 
     public PostInputFragment() {
         // Required empty public constructor
@@ -49,8 +52,6 @@ public class PostInputFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -58,6 +59,36 @@ public class PostInputFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.input_post_layout, container, false);
+    }
+
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Button bPost = (Button) getView().findViewById(R.id.bPost);
+        Button bCamera = (Button) getView().findViewById(R.id.bCamera);
+        tvPostContent = (EditText) getView().findViewById(R.id.etPostContent);
+
+        bPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String key = mDatabase.child("posts").push().getKey();
+                Post p = new Post(tvPostContent.getText().toString(), "", 0);
+                Map<String, Object> postValues = p.toMap();
+                Map<String, Object> childUpdates = new HashMap<>();
+                childUpdates.put("/posts/"+key, postValues);
+                // TODO: store username
+                // childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
+                mDatabase.updateChildren(childUpdates);
+            }
+        });
+
+        bCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event

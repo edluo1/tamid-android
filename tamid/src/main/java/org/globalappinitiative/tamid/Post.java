@@ -1,5 +1,8 @@
 package org.globalappinitiative.tamid;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Edward on 11/17/2016.
  */
@@ -49,5 +52,13 @@ public class Post {
 
     public void unlike() {
         if (likes > 0) likes--;
+    }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("description", description);
+        result.put("imageUrl", imageUrl);
+        result.put("likes", likes);
+        return result;
     }
 }
