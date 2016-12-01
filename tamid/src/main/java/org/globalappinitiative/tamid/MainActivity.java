@@ -46,6 +46,20 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                try {
+                    Post p = dataSnapshot.getValue(Post.class);
+                    //System.out.println(p);
+                    allPosts.add(p);
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                    PostCardFragment cardFragment = new PostCardFragment(p);
+                    fragmentTransaction.add(R.id.content_main, cardFragment);
+                    fragmentTransaction.commit();
+
+                } catch (DatabaseException er) {
+                    Log.e("db",er.getMessage());
+                }
 
             }
 

@@ -38,6 +38,6 @@ public class PostCardFragment extends Fragment {
         TextView tvLikes = (TextView) getView().findViewById(R.id.tvLikesCount);
 
         tvDesc.setText(p.description);
-        tvLikes.setText(p.likes);
+        tvLikes.setText(Integer.toString(p.likes));
     }
 }
