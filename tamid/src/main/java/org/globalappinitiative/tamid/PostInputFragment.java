@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -76,13 +78,19 @@ public class PostInputFragment extends Fragment {
                 String key = mDatabase.child("posts").push().getKey();
                 String postContent = tvPostContent.getText().toString();
                 if (!postContent.isEmpty()) { // only post if there's nothing written
-                    Post p = new Post(tvPostContent.getText().toString(), "", 0);
-                    Map<String, Object> postValues = p.toMap();
-                    Map<String, Object> childUpdates = new HashMap<>();
-                    childUpdates.put("/posts/"+key, postValues);
-                    // TODO: store username
-                    // childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
-                    mDatabase.updateChildren(childUpdates);
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    if (user != null) { // signed in user
+                        Post p = new Post(tvPostContent.getText().toString(), "", user.getUid(), 0);
+                        Map<String, Object> postValues = p.toMap();
+                        Map<String, Object> childUpdates = new HashMap<>();
+                        childUpdates.put("/posts/"+key, postValues);
+                        // TODO: store username
+                        // childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
+                        mDatabase.updateChildren(childUpdates);
+                    } else {
+                        // No user is signed in
+                    }
+
                 }
             }
         });

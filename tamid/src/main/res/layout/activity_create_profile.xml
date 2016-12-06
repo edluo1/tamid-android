@@ -40,26 +40,14 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:ems="10"
-                android:hint="Username"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginTop="131dp"
-                android:id="@+id/etUserName" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
                 android:hint="Full Name"
                 android:layout_marginTop="18dp"
                 android:id="@+id/etFullName"
                 android:layout_below="@+id/etUserName"
                 android:layout_alignLeft="@+id/etUserName"
-                android:layout_alignStart="@+id/etUserName" />
+                android:layout_alignStart="@+id/etUserName"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -103,6 +91,74 @@
                 android:layout_below="@+id/etEmail"
                 android:layout_alignLeft="@+id/etEmail"
                 android:layout_alignStart="@+id/etEmail"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_person_black_24dp"
+                android:id="@+id/imageView2"
+                android:layout_alignTop="@+id/etUserName"
+                android:layout_above="@+id/etFullName"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:hint="Username"
+                android:layout_marginRight="13dp"
+                android:layout_marginEnd="13dp"
+                android:layout_marginTop="25dp"
+                android:id="@+id/etUserName"
+                android:layout_below="@+id/profile_image"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_toRightOf="@+id/imageView2"
+                android:layout_toEndOf="@+id/imageView2" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_person_black_24dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/imageView3"
+                android:layout_alignBottom="@+id/etFullName"
+                android:layout_alignTop="@+id/etFullName"
+                android:layout_toLeftOf="@+id/etFullName"
+                android:layout_toStartOf="@+id/etFullName" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_phone_black_24dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/imageView4"
+                android:layout_above="@+id/etEmail"
+                android:layout_alignTop="@+id/etPhoneNumber" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_email_black_24dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/imageView6"
+                android:layout_alignTop="@+id/etEmail"
+                android:layout_above="@+id/etChapterName" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_people_black_24dp"
+                android:id="@+id/imageView5"
+                android:layout_alignTop="@+id/etChapterName"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignBottom="@+id/etChapterName" />
 
 
         </RelativeLayout>
