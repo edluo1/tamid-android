@@ -80,12 +80,11 @@ public class PostInputFragment extends Fragment {
                 if (!postContent.isEmpty()) { // only post if there's nothing written
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     if (user != null) { // signed in user
-                        Post p = new Post(tvPostContent.getText().toString(), "", user.getUid(), 0);
+                        Post p = new Post(tvPostContent.getText().toString(), "", user.getUid());
                         Map<String, Object> postValues = p.toMap();
                         Map<String, Object> childUpdates = new HashMap<>();
-                        childUpdates.put("/posts/"+key, postValues);
-                        // TODO: store username
-                        // childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
+                        childUpdates.put("/posts/"+key, postValues); // add post to post database
+                        childUpdates.put("/users/" + user.getUid() + "/posts/" + key, postValues); // Add to user database
                         mDatabase.updateChildren(childUpdates);
                     } else {
                         // No user is signed in

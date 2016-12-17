@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                     PostCardFragment cardFragment = new PostCardFragment(p);
-                    fragmentTransaction.add(R.id.content_main, cardFragment);
+                    fragmentTransaction.add(R.id.content_area, cardFragment);
                     fragmentTransaction.commit();
 
                 } catch (DatabaseException er) {
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                     PostCardFragment cardFragment = new PostCardFragment(p);
-                    fragmentTransaction.add(R.id.content_main, cardFragment);
+                    fragmentTransaction.add(R.id.content_area, cardFragment);
                     fragmentTransaction.commit();
 
                 } catch (DatabaseException er) {
@@ -109,10 +109,10 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         PostInputFragment toPost = new PostInputFragment();
-        fragmentTransaction.add(R.id.content_main, toPost);
+        fragmentTransaction.add(R.id.content_area, toPost); // post input area
         for (Post p: allPosts) {
             PostCardFragment cardFragment = new PostCardFragment(p);
-            fragmentTransaction.add(R.id.content_main, cardFragment);
+            fragmentTransaction.add(R.id.content_area, cardFragment);
         }
         fragmentTransaction.commit();
 
