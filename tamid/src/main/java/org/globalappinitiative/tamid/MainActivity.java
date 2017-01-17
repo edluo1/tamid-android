@@ -3,6 +3,7 @@ package org.globalappinitiative.tamid;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -12,26 +13,107 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        PostInputFragment.OnFragmentInteractionListener {
+
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mPosts = mDatabase.child("posts");
+
+    private ArrayList<Post> allPosts;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mPosts.addChildEventListener(new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                try {
+                    Post p = dataSnapshot.getValue(Post.class);
+                    //System.out.println(p);
+                    allPosts.add(p);
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                    PostCardFragment cardFragment = new PostCardFragment(p);
+                    fragmentTransaction.add(R.id.content_area, cardFragment);
+                    fragmentTransaction.commit();
+
+                } catch (DatabaseException er) {
+                    Log.e("db",er.getMessage());
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                try {
+                    Post p = dataSnapshot.getValue(Post.class);
+                    System.out.println(p);
+                    allPosts.add(p);
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                    PostCardFragment cardFragment = new PostCardFragment(p);
+                    fragmentTransaction.add(R.id.content_area, cardFragment);
+                    fragmentTransaction.commit();
+
+                } catch (DatabaseException er) {
+                    Log.e("db",er.getMessage());
+                }
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("Read failed");
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        allPosts = new ArrayList<>();
+
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        PostCardFragment cardFragment = new PostCardFragment();
-        PostCardFragment testFragment2 = new PostCardFragment();
-        fragmentTransaction.add(R.id.content_main, cardFragment);
-        fragmentTransaction.add(R.id.content_main, testFragment2);
+        PostInputFragment toPost = new PostInputFragment();
+        fragmentTransaction.add(R.id.content_area, toPost); // post input area
+        for (Post p: allPosts) {
+            PostCardFragment cardFragment = new PostCardFragment(p);
+            fragmentTransaction.add(R.id.content_area, cardFragment);
+        }
         fragmentTransaction.commit();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -107,5 +189,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
