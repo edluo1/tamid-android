@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "665773696789-5v30n1lmmqhr3dt6mu3n5khftgk4t0ph.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.globalappinitiative.tamid",
+            "certificate_hash": "B7E35DDFE91148E878E764028136F3E94C85A0A4"
+          }
+        },
+        {
           "client_id": "665773696789-tkk4a5sccpjl9sjke03q3arqk5019j0f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
