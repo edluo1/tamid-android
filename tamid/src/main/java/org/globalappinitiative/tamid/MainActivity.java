@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -42,13 +43,15 @@ public class MainActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
 
-        mPosts.addChildEventListener(new ChildEventListener() {
+        // Query posts sorted in reverse chronological order
+        Query postsQuery = mPosts.orderByChild("postTime").limitToLast(10);
+        postsQuery.addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 try {
+                    System.out.println("hello there");
                     Post p = dataSnapshot.getValue(Post.class);
-                    //System.out.println(p);
                     allPosts.add(p);
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -60,14 +63,13 @@ public class MainActivity extends AppCompatActivity
                 } catch (DatabaseException er) {
                     Log.e("db",er.getMessage());
                 }
-
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 try {
+                    System.out.println("hello there");
                     Post p = dataSnapshot.getValue(Post.class);
-                    System.out.println(p);
                     allPosts.add(p);
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -178,6 +180,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_profile) {
             // Handle the profile
+            startActivity(new Intent(this, CreateProfileActivity.class)); // start
         } else if (id == R.id.nav_news_feed) {
 
         } else if (id == R.id.nav_signout) {

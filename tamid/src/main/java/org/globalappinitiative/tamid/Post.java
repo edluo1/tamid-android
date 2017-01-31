@@ -25,14 +25,14 @@ public class Post {
     public String userID;
     public String imageUrl;
     public int likes;
-    public long postTime;
+    public Long postTime;
 
-    public Post() { // constructor with no arguments because reaosns
+    public Post() { // constructor with no arguments because reasons
         description = "";
         imageUrl = "";
         likes = 0;
         userID = "";
-        postTime = 0;
+        postTime = new Long(0);
     }
 
     public Post(String desc, String user) {
