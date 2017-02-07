@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ public class MainActivity extends AppCompatActivity
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference mPosts = mDatabase.child("posts");
+    private FirebaseAuth user;
+    private String userEmail;
 
     private ArrayList<Post> allPosts;
 
@@ -42,13 +45,14 @@ public class MainActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
 
-        mPosts.addChildEventListener(new ChildEventListener() {
+        // Query posts sorted in reverse chronological order
+        Query postsQuery = mPosts.orderByChild("postTime").limitToLast(10);
+        postsQuery.addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 try {
                     Post p = dataSnapshot.getValue(Post.class);
-                    //System.out.println(p);
                     allPosts.add(p);
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -60,14 +64,12 @@ public class MainActivity extends AppCompatActivity
                 } catch (DatabaseException er) {
                     Log.e("db",er.getMessage());
                 }
-
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 try {
                     Post p = dataSnapshot.getValue(Post.class);
-                    System.out.println(p);
                     allPosts.add(p);
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -104,6 +106,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         allPosts = new ArrayList<>();
+
+        user = FirebaseAuth.getInstance();
+        userEmail = getUserEmail();
+        System.out.println(userEmail);
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -179,6 +185,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_profile) {
             // Handle the profile
+            startActivity(new Intent(this, CreateProfileActivity.class)); // start
         } else if (id == R.id.nav_news_feed) {
 
         } else if (id == R.id.nav_signout) {
@@ -196,5 +203,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    public String getUserEmail() {
+        return user.getCurrentUser().getEmail();
     }
 }

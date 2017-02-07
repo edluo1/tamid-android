@@ -8,7 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
+
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by edLuo1 on 11/7/2016.
@@ -17,6 +24,7 @@ import com.squareup.picasso.Picasso;
 public class PostCardFragment extends Fragment {
 
     private Post p;
+    private LikeButton lbLike;
 
     public PostCardFragment() {
 
@@ -40,7 +48,9 @@ public class PostCardFragment extends Fragment {
         TextView tvUserName = (TextView) getView().findViewById(R.id.tvUserName);
         TextView tvDesc = (TextView) getView().findViewById(R.id.tvDescription);
         TextView tvLikes = (TextView) getView().findViewById(R.id.tvLikesCount);
+        TextView tvPostDate = (TextView) getView().findViewById(R.id.tvPostDate);
         ImageView ivImage = (ImageView) getView().findViewById(R.id.ivImagePost);
+        lbLike = (LikeButton) getView().findViewById(R.id.like_button);
         if (p.imageUrl == null || p.imageUrl.isEmpty()) {
             ivImage.setImageDrawable(null);
         } else { // use Picasso to load the image
@@ -53,5 +63,25 @@ public class PostCardFragment extends Fragment {
         }
         tvDesc.setText(p.description);
         tvLikes.setText(Integer.toString(p.likes));
+        if (p.postTime != null) {
+            Date postDate = new Date(p.postTime);
+            Format dateForm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            tvPostDate.setText(dateForm.format(postDate));
+        }
+
+        lbLike.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+                likeButton.setEnabled(true);
+                p.like();
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                likeButton.setEnabled(false);
+                p.unlike();
+            }
+        });
+
     }
 }
