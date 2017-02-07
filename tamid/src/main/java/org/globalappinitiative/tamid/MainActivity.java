@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference mPosts = mDatabase.child("posts");
+    private FirebaseAuth user;
+    private String userEmail;
 
     private ArrayList<Post> allPosts;
 
@@ -50,7 +52,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 try {
-                    System.out.println("hello there");
                     Post p = dataSnapshot.getValue(Post.class);
                     allPosts.add(p);
                     FragmentManager fragmentManager = getFragmentManager();
@@ -68,7 +69,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 try {
-                    System.out.println("hello there");
                     Post p = dataSnapshot.getValue(Post.class);
                     allPosts.add(p);
                     FragmentManager fragmentManager = getFragmentManager();
@@ -106,6 +106,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         allPosts = new ArrayList<>();
+
+        user = FirebaseAuth.getInstance();
+        userEmail = getUserEmail();
+        System.out.println(userEmail);
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -197,5 +201,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    public String getUserEmail() {
+        return user.getCurrentUser().getEmail();
     }
 }

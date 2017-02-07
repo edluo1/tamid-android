@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.Format;
@@ -21,6 +24,7 @@ import java.util.Date;
 public class PostCardFragment extends Fragment {
 
     private Post p;
+    private LikeButton lbLike;
 
     public PostCardFragment() {
 
@@ -46,6 +50,7 @@ public class PostCardFragment extends Fragment {
         TextView tvLikes = (TextView) getView().findViewById(R.id.tvLikesCount);
         TextView tvPostDate = (TextView) getView().findViewById(R.id.tvPostDate);
         ImageView ivImage = (ImageView) getView().findViewById(R.id.ivImagePost);
+        lbLike = (LikeButton) getView().findViewById(R.id.like_button);
         if (p.imageUrl == null || p.imageUrl.isEmpty()) {
             ivImage.setImageDrawable(null);
         } else { // use Picasso to load the image
@@ -63,5 +68,20 @@ public class PostCardFragment extends Fragment {
             Format dateForm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             tvPostDate.setText(dateForm.format(postDate));
         }
+
+        lbLike.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+                likeButton.setEnabled(true);
+                p.like();
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                likeButton.setEnabled(false);
+                p.unlike();
+            }
+        });
+
     }
 }

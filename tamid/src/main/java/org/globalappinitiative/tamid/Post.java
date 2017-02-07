@@ -50,6 +50,8 @@ public class Post {
         likes = 0;
         postTime = new Date().getTime();
     }
+
+
     public Post(String description, String imageUrl, String userID, int likes, long postTime) {
         this.description = description;
         this.imageUrl = imageUrl;
