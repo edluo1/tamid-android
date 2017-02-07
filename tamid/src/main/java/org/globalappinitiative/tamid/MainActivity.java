@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity
     private DatabaseReference mPosts = mDatabase.child("posts");
     private FirebaseAuth user;
     private String userEmail;
+    private String user_name;
 
     private ArrayList<Post> allPosts;
 
@@ -108,8 +110,10 @@ public class MainActivity extends AppCompatActivity
         allPosts = new ArrayList<>();
 
         user = FirebaseAuth.getInstance();
+        user_name = getUser_name();
         userEmail = getUserEmail();
         System.out.println(userEmail);
+
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -124,6 +128,8 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +146,12 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        TextView txtemail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_txt);
+        txtemail.setText(userEmail);
+        TextView txtuser = (TextView) navigationView.getHeaderView(0).findViewById(R.id.user_txt);
+        txtuser.setText(user_name);
 
 
     }
@@ -207,5 +218,8 @@ public class MainActivity extends AppCompatActivity
 
     public String getUserEmail() {
         return user.getCurrentUser().getEmail();
+    }
+    public String getUser_name(){
+        return user.getCurrentUser().getDisplayName();
     }
 }
