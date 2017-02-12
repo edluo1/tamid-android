@@ -25,6 +25,7 @@ public class PostCardFragment extends Fragment {
 
     private Post p;
     private LikeButton lbLike;
+    private TextView tvLikes;
 
     public PostCardFragment() {
 
@@ -47,7 +48,7 @@ public class PostCardFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         TextView tvUserName = (TextView) getView().findViewById(R.id.tvUserName);
         TextView tvDesc = (TextView) getView().findViewById(R.id.tvDescription);
-        TextView tvLikes = (TextView) getView().findViewById(R.id.tvLikesCount);
+        tvLikes = (TextView) getView().findViewById(R.id.tvLikesCount);
         TextView tvPostDate = (TextView) getView().findViewById(R.id.tvPostDate);
         ImageView ivImage = (ImageView) getView().findViewById(R.id.ivImagePost);
         lbLike = (LikeButton) getView().findViewById(R.id.like_button);
@@ -74,12 +75,14 @@ public class PostCardFragment extends Fragment {
             public void liked(LikeButton likeButton) {
                 likeButton.setEnabled(true);
                 p.like();
+                tvLikes.setText(p.likes);
             }
 
             @Override
             public void unLiked(LikeButton likeButton) {
                 likeButton.setEnabled(false);
                 p.unlike();
+                tvLikes.setText(p.likes);
             }
         });
 

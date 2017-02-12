@@ -13,6 +13,13 @@ public class UserProfile {
     private String phoneNum;
     private String location;
 
+    public UserProfile() {
+        email = "";
+        fullName = "";
+        phoneNum = "";
+        location = "";
+    }
+
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("email", email);

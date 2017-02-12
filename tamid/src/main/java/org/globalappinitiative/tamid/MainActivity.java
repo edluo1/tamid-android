@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity
                     PostCardFragment cardFragment = new PostCardFragment(p);
                     fragmentTransaction.add(R.id.content_area, cardFragment);
                     fragmentTransaction.commit();
+                    System.out.println("hi");
 
                 } catch (DatabaseException er) {
                     Log.e("db",er.getMessage());
