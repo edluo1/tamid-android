@@ -32,7 +32,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        PostInputFragment.OnFragmentInteractionListener {
+        PostInputFragment.OnFragmentInteractionListener,
+        DisplayPostsFragment.OnFragmentInteractionListener {
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference mPosts = mDatabase.child("posts");
@@ -40,66 +41,6 @@ public class MainActivity extends AppCompatActivity
     private String userEmail;
 
     private ArrayList<Post> allPosts;
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        // Query posts sorted in reverse chronological order
-        Query postsQuery = mPosts.orderByChild("postTime").limitToLast(10);
-        postsQuery.addChildEventListener(new ChildEventListener() {
-
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                try {
-                    Post p = dataSnapshot.getValue(Post.class);
-                    allPosts.add(p);
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                    PostCardFragment cardFragment = new PostCardFragment(p);
-                    fragmentTransaction.add(R.id.content_area, cardFragment);
-                    fragmentTransaction.commit();
-                    System.out.println("hi");
-
-                } catch (DatabaseException er) {
-                    Log.e("db",er.getMessage());
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                try {
-                    Post p = dataSnapshot.getValue(Post.class);
-                    allPosts.add(p);
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                    PostCardFragment cardFragment = new PostCardFragment(p);
-                    fragmentTransaction.add(R.id.content_area, cardFragment);
-                    fragmentTransaction.commit();
-
-                } catch (DatabaseException er) {
-                    Log.e("db",er.getMessage());
-                }
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("Read failed");
-            }
-        });
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,6 +128,11 @@ public class MainActivity extends AppCompatActivity
             // Handle the profile
             startActivity(new Intent(this, CreateProfileActivity.class)); // start
         } else if (id == R.id.nav_news_feed) {
+            DisplayPostsFragment newsfeed = new DisplayPostsFragment();
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.mainFragment, newsfeed);
+            fragmentTransaction.commit();
 
         } else if (id == R.id.nav_signout) {
             FirebaseAuth.getInstance().signOut(); // sign out user
