@@ -33,7 +33,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         PostInputFragment.OnFragmentInteractionListener,
-        DisplayPostsFragment.OnFragmentInteractionListener {
+        DisplayPostsFragment.OnFragmentInteractionListener,
+        CreateProfileFragment.OnFragmentInteractionListener {
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference mPosts = mDatabase.child("posts");
@@ -126,7 +127,13 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_profile) {
             // Handle the profile
-            startActivity(new Intent(this, CreateProfileActivity.class)); // start
+            CreateProfileFragment cpf = new CreateProfileFragment();
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.mainFragment, cpf);
+            fragmentTransaction.commit();
+
+            //startActivity(new Intent(this, CreateProfileActivity.class)); // start
         } else if (id == R.id.nav_news_feed) {
             DisplayPostsFragment newsfeed = new DisplayPostsFragment();
             FragmentManager fragmentManager = getFragmentManager();
