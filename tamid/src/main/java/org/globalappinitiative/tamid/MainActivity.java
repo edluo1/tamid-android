@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity
     private DatabaseReference mPosts = mDatabase.child("posts");
     private FirebaseAuth user;
     private String userEmail;
+    private String user_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         user = FirebaseAuth.getInstance();
+        user_name = getUser_name();
         userEmail = getUserEmail();
         System.out.println(userEmail);
 
@@ -70,6 +73,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        TextView txtemail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_txt);
+        txtemail.setText(userEmail);
+        TextView txtuser = (TextView) navigationView.getHeaderView(0).findViewById(R.id.user_txt);
+        txtuser.setText(user_name);
+
+
     }
 
     @Override
@@ -143,5 +152,8 @@ public class MainActivity extends AppCompatActivity
 
     public String getUserEmail() {
         return user.getCurrentUser().getEmail();
+    }
+    public String getUser_name(){
+        return user.getCurrentUser().getDisplayName();
     }
 }
