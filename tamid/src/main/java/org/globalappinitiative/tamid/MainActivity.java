@@ -41,29 +41,14 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAuth user;
     private String userEmail;
 
-    private ArrayList<Post> allPosts;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        allPosts = new ArrayList<>();
-
         user = FirebaseAuth.getInstance();
         userEmail = getUserEmail();
         System.out.println(userEmail);
-
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        PostInputFragment toPost = new PostInputFragment();
-        fragmentTransaction.add(R.id.content_area, toPost); // post input area
-        for (Post p: allPosts) {
-            PostCardFragment cardFragment = new PostCardFragment(p);
-            fragmentTransaction.add(R.id.content_area, cardFragment);
-        }
-        fragmentTransaction.commit();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -125,19 +110,18 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
         if (id == R.id.nav_profile) {
             // Handle the profile
             CreateProfileFragment cpf = new CreateProfileFragment();
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.mainFragment, cpf);
             fragmentTransaction.commit();
 
             //startActivity(new Intent(this, CreateProfileActivity.class)); // start
         } else if (id == R.id.nav_news_feed) {
             DisplayPostsFragment newsfeed = new DisplayPostsFragment();
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.mainFragment, newsfeed);
             fragmentTransaction.commit();
 

@@ -103,12 +103,6 @@ public class CreateProfileFragment extends Fragment {
 
         mProfile = mDatabase.child("users").child(user.getUid());
 
-        if (mProfile == null) {
-            System.out.println("it's null dumbass");
-        } else {
-            System.out.println("not null");
-        }
-
         DatabaseReference fullName = mProfile.child("fullname");
         mProfile.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

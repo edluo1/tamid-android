@@ -28,7 +28,6 @@
         <activity
             android:name=".MainActivity"
             android:label="TAMID" />
-        <activity android:name=".CreateProfileActivity"></activity>
     </application>
 
 </manifest>

@@ -58,18 +58,19 @@ public class DisplayPostsFragment extends Fragment {
 
         allPosts = new ArrayList<>();
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
+
+        PostInputFragment toPost = new PostInputFragment(); // Instantiate post input
+        fragmentTransaction.add(R.id.content_area, toPost); // Add post input area
         /*
-        PostInputFragment toPost = new PostInputFragment(); // Show post input area
-        fragmentTransaction.add(R.id.content_area, toPost); // post input area
         for (Post p: allPosts) {
             PostCardFragment cardFragment = new PostCardFragment(p);
             fragmentTransaction.add(R.id.content_area, cardFragment);
         }
-        fragmentTransaction.commit();
         */
+        fragmentTransaction.commit();
 
         // Query posts sorted in reverse chronological order
         Query postsQuery = mPosts.orderByChild("postTime").limitToLast(10);
@@ -80,13 +81,12 @@ public class DisplayPostsFragment extends Fragment {
                 try {
                     Post p = dataSnapshot.getValue(Post.class);
                     allPosts.add(p);
-                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentManager fragmentManager = getChildFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                     PostCardFragment cardFragment = new PostCardFragment(p);
                     fragmentTransaction.add(R.id.content_area, cardFragment);
                     fragmentTransaction.commit();
-                    System.out.println("hi");
 
                 } catch (DatabaseException er) {
                     Log.e("db",er.getMessage());
@@ -96,15 +96,16 @@ public class DisplayPostsFragment extends Fragment {
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 try {
+                    /*
                     Post p = dataSnapshot.getValue(Post.class);
                     allPosts.add(p);
-                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentManager fragmentManager = getChildFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                     PostCardFragment cardFragment = new PostCardFragment(p);
                     fragmentTransaction.add(R.id.content_area, cardFragment);
                     fragmentTransaction.commit();
-
+                    */
                 } catch (DatabaseException er) {
                     Log.e("db",er.getMessage());
                 }

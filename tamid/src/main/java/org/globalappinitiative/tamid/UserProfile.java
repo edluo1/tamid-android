@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserProfile {
-    private String username;
-    private String email;
-    private String fullName;
-    private String phoneNum;
-    private String location;
+    public String username;
+    public String email;
+    public String fullName;
+    public String phoneNum;
+    public String location;
 
     public UserProfile() {
         username = "";
