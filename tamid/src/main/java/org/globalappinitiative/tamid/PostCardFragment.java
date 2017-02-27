@@ -75,14 +75,14 @@ public class PostCardFragment extends Fragment {
             public void liked(LikeButton likeButton) {
                 likeButton.setEnabled(true);
                 p.like();
-                tvLikes.setText(p.likes);
+                tvLikes.setText(String.valueOf(p.likes));
             }
 
             @Override
             public void unLiked(LikeButton likeButton) {
                 likeButton.setEnabled(false);
                 p.unlike();
-                tvLikes.setText(p.likes);
+                tvLikes.setText(String.valueOf(p.likes));
             }
         });
 

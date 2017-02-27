@@ -78,6 +78,13 @@ public class MainActivity extends AppCompatActivity
         TextView txtuser = (TextView) navigationView.getHeaderView(0).findViewById(R.id.user_txt);
         txtuser.setText(user_name);
 
+        // start main activity
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        DisplayPostsFragment newsfeed = new DisplayPostsFragment();
+        fragmentTransaction.replace(R.id.mainFragment, newsfeed);
+        fragmentTransaction.commit();
 
     }
 
